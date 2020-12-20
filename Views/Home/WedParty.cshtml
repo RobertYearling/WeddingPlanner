@@ -1,0 +1,27 @@
+@model Wedding
+
+< class="container">
+    <div class="row text-center align-items-center">
+        <h1>@Model.Bride & @Model.Groom</h1>
+        <li style="list-style-type:none;padding-left: 300px; "><a href="/dashboard">Dashboard</a> | <a href="/logout">Log Out</a></li>
+    </div>
+    <div class="row">
+        <h5>Date: @Model.Date</h5>
+    </div>
+    <div class="row">
+        <h3>Guests:</h3>
+    </div>
+    <div>
+        <ol>
+            @if(@Model.Attendees.Count == 0)
+            {
+                <li>No one wants to see you get married</li>
+            }
+            @foreach(RSVP r in @Model.Attendees)
+            {
+                <li>@r.Attendee.FirstName @r.Attendee.LastName</li>
+            }
+        </ol>
+    </div>
+</div>
+

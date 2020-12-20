@@ -1,0 +1,48 @@
+@model List<Wedding>
+
+<h1 class="text-center">Welcome To The Wedding Planner!</h1>
+<div class="container">
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Wedding:</th>
+                    <th>Date:</th>
+                    <th>Guest:</th>
+                    <th>Action:</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(Wedding w in @Model)
+                {
+                    <tr>
+                        <td><a asp-action="WedParty" asp-controller="Home" asp-route-weddingId="@w.WeddingId">@w.Bride & @w.Groom</a></td>
+                        <td>@w.Date</td>
+                        <td>@w.Attendees.Count</td>
+                        <td>
+                            @if(w.Creator.UserId == ViewBag.User.UserId) // Only need it @ Symbol if it is an immediate Child of the HTML Tag
+                            {
+                                <a asp-action="DestroyWedding" asp-controller="Home" asp-route-weddingId="@w.WeddingId">Cancel</a>
+                            }
+                            else
+                            {
+                                if(w.Attendees.Any( r => r.UserId == ViewBag.User.UserId))
+                                {
+                                    <a asp-action="Other" asp-controller="Home" asp-route-userid="@ViewBag.User.UserId" asp-route-weddingid="@w.WeddingId">Other Plans</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="RSVP" asp-controller="Home" asp-route-userid="@ViewBag.User.UserId" asp-route-weddingid="@w.WeddingId">RSVP</a>
+                                    // Dont forget the @ Symbol on Route UserId and Route PartyId
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <a asp-action="NewWedding"  asp-controller="Home" class="btn btn-info">Add a Wedding</a>
+    </div>
+</div>
